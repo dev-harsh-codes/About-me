@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>H.A.R.S.H | 🗿</title>
+    <title>Harsh | Developer & Hustler</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,17 +13,19 @@
             --text-main: #c9d1d9;
             --text-muted: #8b949e;
             --accent: #58a6ff; 
+            --accent-glow: rgba(88, 166, 255, 0.2);
             --btn-green: #238636;
             --btn-green-hover: #2ea043;
             --btn-bg: #21262d;
             --btn-hover: #30363d;
+            --saffron: #ff9933; /* For the Om symbol glow */
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
         
         body {
@@ -33,9 +35,29 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            line-height: 1.5;
         }
 
-        /* Modals */
+        /* --- Custom SVGs Styling --- */
+        .icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .icon-large {
+            width: 24px;
+            height: 24px;
+        }
+
+        .om-icon {
+            fill: var(--saffron);
+            filter: drop-shadow(0 0 5px rgba(255, 153, 51, 0.4));
+        }
+
+        /* --- Modals (Entry & VIP) --- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -43,12 +65,12 @@
             width: 100%;
             height: 100%;
             background: rgba(13, 17, 23, 0.95);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 100;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
 
         .modal-box {
@@ -59,37 +81,45 @@
             text-align: center;
             width: 90%;
             max-width: 400px;
-            box-shadow: 0 16px 32px rgba(0,0,0,0.8);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            transform: translateY(0);
+            animation: slideUp 0.4s ease-out;
         }
 
         .modal-box h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
+            font-size: 22px;
+            margin-bottom: 12px;
             color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 600;
         }
 
         .modal-box p {
             color: var(--text-muted);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             font-size: 14px;
         }
 
         .git-input {
             width: 100%;
-            padding: 12px;
+            padding: 12px 16px;
             background-color: #010409;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 8px;
             color: var(--text-main);
             font-size: 14px;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.3s ease;
+            font-family: monospace;
         }
 
         .git-input:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+            box-shadow: 0 0 0 3px var(--accent-glow);
         }
 
         .git-btn {
@@ -98,77 +128,97 @@
             background-color: var(--btn-green);
             color: white;
             border: 1px solid rgba(240, 246, 252, 0.1);
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, transform 0.1s;
         }
 
-        .git-btn:hover {
-            background-color: var(--btn-green-hover);
-        }
+        .git-btn:hover { background-color: var(--btn-green-hover); }
+        .git-btn:active { transform: scale(0.98); }
 
-        /* Main Container */
+        /* --- Main Content Area --- */
         .main-container {
             width: 100%;
-            max-width: 900px;
-            padding: 20px;
-            margin-top: 40px;
+            max-width: 850px;
+            padding: 30px 20px;
             display: none; 
+            animation: fadeIn 0.6s ease;
         }
 
+        /* Profile Header */
         .profile-header {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
             margin-bottom: 30px;
-            padding-bottom: 20px;
+            padding-bottom: 30px;
             border-bottom: 1px solid var(--border-color);
         }
 
         .avatar {
-            width: 100px;
-            height: 100px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            border: 2px solid var(--accent);
-            background: linear-gradient(135deg, #238636, #1f6feb);
+            background: linear-gradient(135deg, #161b22, #0d1117);
+            border: 2px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
-            box-shadow: 0 0 15px rgba(88, 166, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Sleek monogram for avatar */
+        .avatar::after {
+            content: "H";
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text-muted);
+            font-family: monospace;
         }
 
         .profile-info h1 {
             font-size: 28px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .verified-badge {
+            color: var(--accent);
+            width: 20px;
+            height: 20px;
         }
 
         .profile-info p {
             color: var(--text-muted);
-            font-size: 16px;
+            font-size: 15px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
 
-        /* Tabs */
+        /* Tabs Navigation */
         .tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 24px;
             border-bottom: 1px solid var(--border-color);
             overflow-x: auto;
+            scrollbar-width: none;
         }
+        .tabs::-webkit-scrollbar { display: none; }
 
         .tab {
             background: transparent;
             border: none;
-            padding: 10px 16px;
+            padding: 12px 16px;
             color: var(--text-main);
             font-size: 14px;
             cursor: pointer;
@@ -178,6 +228,7 @@
             align-items: center;
             gap: 8px;
             white-space: nowrap;
+            font-weight: 500;
         }
 
         .tab:hover {
@@ -190,25 +241,19 @@
             font-weight: 600;
         }
 
-        /* Content Sections */
+        /* Content Sections & Cards */
         .content-section {
             display: none;
-            background-color: var(--container-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 24px;
-            animation: fadeIn 0.4s ease;
+            animation: slideUp 0.3s ease;
         }
 
-        .content-section.active {
-            display: block;
-        }
+        .content-section.active { display: block; }
 
-        .content-section h3 {
+        .section-title {
             margin-bottom: 20px;
-            font-size: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-main);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -216,210 +261,228 @@
 
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 16px;
         }
 
         .card {
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 16px;
-            background-color: var(--bg-color);
-            transition: transform 0.2s;
+            padding: 20px;
+            background-color: var(--container-bg);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         
+        /* Subtle hover effect for cards */
         .card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             border-color: #8b949e;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
         }
 
         .card h4 {
             color: var(--text-main);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 600;
         }
 
         .card p {
             font-size: 14px;
             color: var(--text-muted);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
-        /* Custom Telegram & Special Styling */
-        .telegram-link {
+        .highlight { color: var(--accent); font-weight: 500; }
+        .success-text { color: var(--btn-green); font-weight: 500; }
+
+        /* Professional Contact Button */
+        .contact-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(88, 166, 255, 0.1);
-            color: var(--accent);
-            padding: 8px 16px;
-            border-radius: 20px;
+            background: var(--btn-bg);
+            color: var(--text-main);
+            padding: 10px 20px;
+            border-radius: 6px;
             text-decoration: none;
-            font-weight: 600;
-            border: 1px solid rgba(88, 166, 255, 0.2);
-            margin-top: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            margin-top: 16px;
+            transition: all 0.2s;
         }
 
-        .telegram-link:hover {
-            background: rgba(88, 166, 255, 0.2);
-            box-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
+        .contact-btn:hover {
+            border-color: var(--text-muted);
+            background: #30363d;
         }
 
         .quote-box {
-            background-color: #21262d;
-            border-left: 4px solid #f78166;
-            padding: 12px 16px;
-            font-style: italic;
+            margin-top: 20px;
+            padding: 16px;
+            background-color: rgba(13, 17, 23, 0.5);
+            border-left: 3px solid #f78166;
             border-radius: 0 6px 6px 0;
-            margin-top: 15px;
-            color: #8b949e;
+            font-style: italic;
+            font-size: 13px;
+            color: var(--text-muted);
         }
 
-        /* --- ANIMATED EMOJIS CSS --- */
-        .emoji { display: inline-block; }
-        
-        .bounce { animation: bounce 1.5s infinite; }
-        .spin { animation: spin 3s linear infinite; }
-        .wiggle { animation: wiggle 1s ease-in-out infinite; }
-        .pulse { animation: pulseEmoji 1.5s infinite; }
-        .float { animation: float 2.5s ease-in-out infinite; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes wiggle { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-15deg); } 75% { transform: rotate(15deg); } }
-        @keyframes pulseEmoji { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
+        /* Error Text */
         #vipError {
             color: #f85149; 
             font-size: 13px;
-            margin-top: 10px;
+            margin-top: 12px;
             display: none;
             font-weight: 500;
         }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
     </style>
 </head>
 <body>
 
     <div class="modal-overlay" id="entryModal">
         <div class="modal-box">
-            <h2><span class="emoji spin">⚙️</span> System Access</h2>
-            <p>Entering H.A.R.S.H's Terminal...</p>
-            <input type="password" id="entryPassword" class="git-input" placeholder="Enter root password...">
-            <button id="entryBtn" class="git-btn">Authenticate</button>
+            <h2>
+                <svg class="icon icon-large" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+                System Initialization
+            </h2>
+            <p>Enter credentials to access the workspace.</p>
+            <input type="password" id="entryPassword" class="git-input" placeholder="root@harsh:~# password">
+            <button id="entryBtn" class="git-btn">Initialize</button>
         </div>
     </div>
 
     <div class="main-container" id="mainApp">
         
         <div class="profile-header">
-            <div class="avatar"><span class="emoji bounce">🗿</span></div>
+            <div class="avatar"></div>
             <div class="profile-info">
-                <h1>H.A.R.S.H <span class="emoji smoke">🚬</span></h1>
-                <p><span class="emoji float">📍</span> Location: Aapke dil me <span class="emoji pulse">🌲</span></p>
+                <h1>
+                    Harsh
+                    <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                </h1>
+                <p>
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    Nawada, Bihar | Developer & Entrepreneur
+                </p>
             </div>
         </div>
 
         <div class="tabs">
-            <button class="tab active" data-tab="about">
-                <span class="emoji wiggle">👋</span> About Me
+            <button class="tab active" data-tab="overview">
+                <svg class="icon" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"/></svg>
+                Overview
             </button>
-            <button class="tab" data-tab="journey">
-                <span class="emoji float">🚀</span> Dreams & Future
+            <button class="tab" data-tab="vision">
+                <svg class="icon" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm3.5-6.5h-3v-3a.5.5 0 00-1 0v3.5a.5.5 0 00.5.5h3.5a.5.5 0 000-1z"/></svg>
+                Vision & Path
             </button>
-            <button class="tab" data-tab="qualities">
-                <span class="emoji pulse">💎</span> Qualities
+            <button class="tab" data-tab="stack">
+                <svg class="icon" viewBox="0 0 16 16"><path d="M2 5.5v9c0 .28.22.5.5.5h11a.5.5 0 00.5-.5v-9a.5.5 0 00-.5-.5H2.5a.5.5 0 00-.5.5zm.5-2H13.5a2 2 0 012 2v9a2 2 0 01-2 2H2.5a2 2 0 01-2-2v-9a2 2 0 012-2zm2.25 4.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5h-1.5zm0 3a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5z"/></svg>
+                Tech Stack
             </button>
-            <button class="tab" data-tab="vip">
-                <span class="emoji spin">🔒</span> VIP Vault
+            <button class="tab" data-tab="vault">
+                <svg class="icon" viewBox="0 0 16 16"><path d="M4 4v2h-.25A1.75 1.75 0 002 7.75v5.5C2 14.216 2.784 15 3.75 15h8.5A1.75 1.75 0 0014 13.25v-5.5A1.75 1.75 0 0012.25 6H12V4a4 4 0 10-8 0zm6.5 2V4a2.5 2.5 0 00-5 0v2h5zM3.5 7.75a.25.25 0 01.25-.25h8.5a.25.25 0 01.25.25v5.5a.25.25 0 01-.25.25h-8.5a.25.25 0 01-.25-.25v-5.5zM8 10a1 1 0 100-2 1 1 0 000 2z"/></svg>
+                Classified Vault
             </button>
         </div>
 
-        <div class="content-section active" id="about">
-            <h3><span class="emoji bounce">🏇</span> Ram Ram Bhai sareane!</h3>
+        <div class="content-section active" id="overview">
+            <h3 class="section-title">Professional Summary</h3>
             
             <div class="cards-grid">
                 <div class="card">
-                    <h4><span class="emoji spin">🕉️</span> Religion</h4>
-                    <p><span style="color: #f78166; font-weight: bold;">🚩 Bhagwadhari</span></p>
+                    <h4>
+                        <svg class="icon om-icon" viewBox="0 0 24 24"><path d="M12.16 8.84c-.39-.39-1.02-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.06-1.06c.39-.39.39-1.02 0-1.41zm-4.24 0c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L7.92 8.84zm8.48 4.24c-.39-.39-1.02-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.06-1.06c.39-.39.39-1.02 0-1.41zm-12.72 0c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41l-1.06-1.06zm8.48 4.24c-.39-.39-1.02-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.06-1.06c.39-.39.39-1.02 0-1.41zm-4.24 0c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41l-1.06-1.06zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                        Identity
+                    </h4>
+                    <p>Rooted in culture. <span style="color: var(--saffron); font-weight: 500;">Bhagwadhari</span></p>
                 </div>
+                
                 <div class="card">
-                    <h4><span class="emoji pulse">💓</span> Lo 📈 e</h4>
-                    <p><span class="emoji float">💵</span> money <span class="emoji float">💵</span></p>
+                    <h4>
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                        Previous Venture
+                    </h4>
+                    <p>Successfully built, scaled, and exited a large-scale digital media and Telegram network.</p>
                 </div>
-                <div class="card">
-                    <h4><span class="emoji wiggle">🚨</span> Occupation History</h4>
-                    <p>Former Telegram channel network owner. Ab normal user ban gya <span class="emoji pulse">📴</span>, pura Telegram network sell kr diya <span class="emoji spin">💰</span></p>
-                </div>
+
                 <div class="card" style="grid-column: 1 / -1;">
-                    <h4><span class="emoji bounce">📲</span> Contact & Connect</h4>
-                    <a href="https://t.me/the_developer_harsh" target="_blank" class="telegram-link">
-                        <span class="emoji wiggle">✈️</span> @the_developer_harsh
+                    <h4>
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.379.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                        Network & Connect
+                    </h4>
+                    <p>Open for discussions regarding tech, development, and high-value networking.</p>
+                    <a href="https://t.me/the_developer_harsh" target="_blank" class="contact-btn">
+                        Let's Connect on Telegram
                     </a>
                     <div class="quote-box">
-                        <span class="emoji float">💬</span> "DM only if you vibe with dreams than excuses."
+                        "Connecting with those who value execution and vision."
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="content-section" id="journey">
-            <h3><span class="emoji float">🏎️</span> My Future & Education</h3>
+        <div class="content-section" id="vision">
+            <h3 class="section-title">Academic & Strategic Goals</h3>
             <div class="cards-grid">
                 <div class="card">
-                    <h4><span class="emoji bounce">🎀</span> Education</h4>
-                    <p>Currently 12th. (PW Lakshya Batch)</p>
+                    <h4>Current Phase</h4>
+                    <p>Class 12th Board Examinations & Intensive JEE Preparation via <span class="highlight">PW Lakshya Batch</span>.</p>
                 </div>
                 <div class="card">
-                    <h4><span class="emoji pulse">🎓</span> Dream College</h4>
-                    <p>NIT Patna (CSE). <br>Chance of success: <span style="color: var(--accent);">50% chance hai mil jaiga cse ♾️</span></p>
+                    <h4>Target Institution</h4>
+                    <p>NIT Patna (Computer Science Engineering). Current trajectory estimates a <span class="highlight">50% probability</span> of securing CSE.</p>
                 </div>
-                <div class="card" style="grid-column: 1 / -1;">
-                    <h4><span class="emoji spin">🌍</span> Ultimate Dream</h4>
-                    <p>Visit all countries of the world. <br><span style="color: var(--btn-green); font-weight: bold;">2 countries done ✅</span></p>
+                <div class="card">
+                    <h4>Global Footprint</h4>
+                    <p>Goal: Explore every country on the globe. <br><span class="success-text">Status: 2 Countries Successfully Visited.</span></p>
                 </div>
-                <div class="card" style="grid-column: 1 / -1; background: linear-gradient(to right, #161b22, #21262d);">
-                    <h4><span class="emoji float">🚘</span> Future Ride</h4>
-                    <p>Working hard to park that hypercar in the garage. <em>(Koenigsegg Gemera vibes)</em></p>
+                <div class="card" style="border-left: 3px solid var(--accent);">
+                    <h4>Automotive Milestone</h4>
+                    <p>Working towards acquiring top-tier engineering assets. Ultimate garage target: <span class="highlight">Koenigsegg Gemera</span>.</p>
                 </div>
             </div>
         </div>
 
-        <div class="content-section" id="qualities">
-            <h3><span class="emoji spin">⚙️</span> My Qualities & Skills</h3>
+        <div class="content-section" id="stack">
+            <h3 class="section-title">Core Competencies</h3>
             <div class="cards-grid">
                 <div class="card">
-                    <h4><span class="emoji float">👨‍💻</span> Programming</h4>
-                    <p>Python <span class="emoji spin">🐍</span> & Java <span class="emoji pulse">☕</span></p>
+                    <h4>Languages</h4>
+                    <p>Proficient in logic-building and syntax using <span class="highlight">Python</span> and <span class="highlight">Java</span>.</p>
                 </div>
                 <div class="card">
-                    <h4><span class="emoji wiggle">🎮</span> Gaming</h4>
-                    <p>Pro level plays <span class="emoji bounce">🕹️</span></p>
+                    <h4>Strategic Assets</h4>
+                    <p>Primary focus on <span class="success-text">Financial Independence & Building Scalable Assets</span>.</p>
                 </div>
                 <div class="card">
-                    <h4><span class="emoji float">🎧</span> Music</h4>
-                    <p>Vibing 24/7 <span class="emoji pulse">🎵</span></p>
-                </div>
-                <div class="card">
-                    <h4><span class="emoji spin">💎</span> Hustle</h4>
-                    <p>Making money <span class="emoji bounce">💹</span>💳 & Flexing too much freaking money <span class="emoji float">🤑💸</span></p>
+                    <h4>Recreation</h4>
+                    <p>Competitive Gaming and continuous Music streaming for deep-work focus.</p>
                 </div>
             </div>
         </div>
 
-        <div class="content-section" id="vip">
-            <h3><span class="emoji pulse">⚠️</span> Restricted VIP Area</h3>
-            <p>This section contains highly classified personal information. Only authorized VIPs have the clearance.</p>
+        <div class="content-section" id="vault">
+            <h3 class="section-title">Restricted Access Directory</h3>
+            <p style="color: var(--text-muted); margin-bottom: 24px;">This sector contains highly classified operational data. Level-2 clearance is mandatory.</p>
             
-            <div class="card" style="max-width: 400px; margin: 20px auto; background-color: var(--container-bg);">
-                <h4 style="color: var(--text-main); margin-bottom: 15px;"><span class="emoji wiggle">🔑</span> Enter VIP Passkey</h4>
-                <input type="password" id="vipPassword" class="git-input" placeholder="Enter secret code...">
-                <button id="vipBtn" class="git-btn">Unlock Vault</button>
-                <p id="vipError">Access Denied: Invalid Passkey</p>
+            <div class="card" style="max-width: 400px; margin: 0 auto;">
+                <h4 style="margin-bottom: 16px;">Authentication Required</h4>
+                <input type="password" id="vipPassword" class="git-input" placeholder="Enter security passkey...">
+                <button id="vipBtn" class="git-btn">Decrypt & Access</button>
+                <p id="vipError">ERR: Access Denied. Invalid Signature.</p>
             </div>
         </div>
 
@@ -437,6 +500,7 @@
             function checkEntry() {
                 if (entryPassword.value === 'Harsh') {
                     entryModal.style.opacity = '0';
+                    entryModal.style.visibility = 'hidden';
                     setTimeout(() => {
                         entryModal.style.display = 'none';
                         mainApp.style.display = 'block';
@@ -444,10 +508,10 @@
                 } else {
                     entryPassword.style.borderColor = '#f85149'; 
                     entryPassword.value = '';
-                    entryPassword.placeholder = 'Incorrect password...';
+                    entryPassword.placeholder = 'Invalid syntax...';
                     setTimeout(() => {
                         entryPassword.style.borderColor = '#30363d';
-                        entryPassword.placeholder = 'Enter root password...';
+                        entryPassword.placeholder = 'root@harsh:~# password';
                     }, 1500);
                 }
             }
@@ -458,7 +522,7 @@
             });
 
 
-            // --- 2. Tab Switching Logic ---
+            // --- 2. Tab Navigation Logic ---
             const tabs = document.querySelectorAll('.tab');
             const contentSections = document.querySelectorAll('.content-section');
 
@@ -479,7 +543,7 @@
             });
 
 
-            // --- 3. VIP Section Logic ---
+            // --- 3. VIP Vault Logic ---
             const vipPassword = document.getElementById('vipPassword');
             const vipBtn = document.getElementById('vipBtn');
             const vipError = document.getElementById('vipError');
