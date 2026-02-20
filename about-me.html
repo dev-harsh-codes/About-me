@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H.A.R.S.H | 🗿</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0d1117; 
+            --container-bg: #161b22; 
+            --border-color: #30363d;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #58a6ff; 
+            --btn-green: #238636;
+            --btn-green-hover: #2ea043;
+            --btn-bg: #21262d;
+            --btn-hover: #30363d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 17, 23, 0.95);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-box {
+            background-color: var(--container-bg);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 16px 32px rgba(0,0,0,0.8);
+        }
+
+        .modal-box h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .modal-box p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .git-input {
+            width: 100%;
+            padding: 12px;
+            background-color: #010409;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-main);
+            font-size: 14px;
+            margin-bottom: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .git-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+        }
+
+        .git-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--btn-green);
+            color: white;
+            border: 1px solid rgba(240, 246, 252, 0.1);
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .git-btn:hover {
+            background-color: var(--btn-green-hover);
+        }
+
+        /* Main Container */
+        .main-container {
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            margin-top: 40px;
+            display: none; 
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            background: linear-gradient(135deg, #238636, #1f6feb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.2);
+        }
+
+        .profile-info h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-info p {
+            color: var(--text-muted);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .tab {
+            background: transparent;
+            border: none;
+            padding: 10px 16px;
+            color: var(--text-main);
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background-color: var(--btn-bg);
+            border-radius: 6px 6px 0 0;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid #f78166; 
+            font-weight: 600;
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            background-color: var(--container-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .content-section h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            background-color: var(--bg-color);
+            transition: transform 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: #8b949e;
+        }
+
+        .card h4 {
+            color: var(--text-main);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Custom Telegram & Special Styling */
+        .telegram-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(88, 166, 255, 0.1);
+            color: var(--accent);
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            margin-top: 10px;
+        }
+
+        .telegram-link:hover {
+            background: rgba(88, 166, 255, 0.2);
+            box-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
+        }
+
+        .quote-box {
+            background-color: #21262d;
+            border-left: 4px solid #f78166;
+            padding: 12px 16px;
+            font-style: italic;
+            border-radius: 0 6px 6px 0;
+            margin-top: 15px;
+            color: #8b949e;
+        }
+
+        /* --- ANIMATED EMOJIS CSS --- */
+        .emoji { display: inline-block; }
+        
+        .bounce { animation: bounce 1.5s infinite; }
+        .spin { animation: spin 3s linear infinite; }
+        .wiggle { animation: wiggle 1s ease-in-out infinite; }
+        .pulse { animation: pulseEmoji 1.5s infinite; }
+        .float { animation: float 2.5s ease-in-out infinite; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes wiggle { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-15deg); } 75% { transform: rotate(15deg); } }
+        @keyframes pulseEmoji { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+        #vipError {
+            color: #f85149; 
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="modal-overlay" id="entryModal">
+        <div class="modal-box">
+            <h2><span class="emoji spin">⚙️</span> System Access</h2>
+            <p>Entering H.A.R.S.H's Terminal...</p>
+            <input type="password" id="entryPassword" class="git-input" placeholder="Enter root password...">
+            <button id="entryBtn" class="git-btn">Authenticate</button>
+        </div>
+    </div>
+
+    <div class="main-container" id="mainApp">
+        
+        <div class="profile-header">
+            <div class="avatar"><span class="emoji bounce">🗿</span></div>
+            <div class="profile-info">
+                <h1>H.A.R.S.H <span class="emoji smoke">🚬</span></h1>
+                <p><span class="emoji float">📍</span> Location: Aapke dil me <span class="emoji pulse">🌲</span></p>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="about">
+                <span class="emoji wiggle">👋</span> About Me
+            </button>
+            <button class="tab" data-tab="journey">
+                <span class="emoji float">🚀</span> Dreams & Future
+            </button>
+            <button class="tab" data-tab="qualities">
+                <span class="emoji pulse">💎</span> Qualities
+            </button>
+            <button class="tab" data-tab="vip">
+                <span class="emoji spin">🔒</span> VIP Vault
+            </button>
+        </div>
+
+        <div class="content-section active" id="about">
+            <h3><span class="emoji bounce">🏇</span> Ram Ram Bhai sareane!</h3>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <h4><span class="emoji spin">🕉️</span> Religion</h4>
+                    <p><span style="color: #f78166; font-weight: bold;">🚩 Bhagwadhari</span></p>
+                </div>
+                <div class="card">
+                    <h4><span class="emoji pulse">💓</span> Lo 📈 e</h4>
+                    <p><span class="emoji float">💵</span> money <span class="emoji float">💵</span></p>
+                </div>
+                <div class="card">
+                    <h4><span class="emoji wiggle">🚨</span> Occupation History</h4>
+                    <p>Former Telegram channel network owner. Ab normal user ban gya <span class="emoji pulse">📴</span>, pura Telegram network sell kr diya <span class="emoji spin">💰</span></p>
+                </div>
+                <div class="card" style="grid-column: 1 / -1;">
+                    <h4><span class="emoji bounce">📲</span> Contact & Connect</h4>
+                    <a href="https://t.me/the_developer_harsh" target="_blank" class="telegram-link">
+                        <span class="emoji wiggle">✈️</span> @the_developer_harsh
+                    </a>
+                    <div class="quote-box">
+                        <span class="emoji float">💬</span> "DM only if you vibe with dreams than excuses."
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section" id="journey">
+            <h3><span class="emoji float">🏎️</span> My Future & Education</h3>
+            <div class="cards-grid">
+                <div class="card">
+                    <h4><span class="emoji bounce">🎀</span> Education</h4>
+                    <p>Currently 12th. (PW Lakshya Batch)</p>
+                </div>
+                <div class="card">
+                    <h4><span class="emoji pulse">🎓</span> Dream College</h4>
+                    <p>NIT Patna (CSE). <br>Chance of success: <span style="color: var(--accent);">50% chance hai mil jaiga cse ♾️</span></p>
+                </div>
+                <div class="card" style="grid-column: 1 / -1;">
+                    <h4><span class="emoji spin">🌍</span> Ultimate Dream</h4>
+                    <p>Visit all countries of the world. <br><span style="color: var(--btn-green); font-weight: bold;">2 countries done ✅</span></p>
+                </div>
+                <div class="card" style="grid-column: 1 / -1; background: linear-gradient(to right, #161b22, #21262d);">
+                    <h4><span class="emoji float">🚘</span> Future Ride</h4>
+                    <p>Working hard to park that hypercar in the garage. <em>(Koenigsegg Gemera vibes)</em></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section" id="qualities">
+            <h3><span class="emoji spin">⚙️</span> My Qualities & Skills</h3>
+            <div class="cards-grid">
+                <div class="card">
+                    <h4><span class="emoji float">👨‍💻</span> Programming</h4>
+                    <p>Python <span class="emoji spin">🐍</span> & Java <span class="emoji pulse">☕</span></p>
+                </div>
+                <div class="card">
+                    <h4><span class="emoji wiggle">🎮</span> Gaming</h4>
+                    <p>Pro level plays <span class="emoji bounce">🕹️</span></p>
+                </div>
+                <div class="card">
+                    <h4><span class="emoji float">🎧</span> Music</h4>
+                    <p>Vibing 24/7 <span class="emoji pulse">🎵</span></p>
+                </div>
+                <div class="card">
+                    <h4><span class="emoji spin">💎</span> Hustle</h4>
+                    <p>Making money <span class="emoji bounce">💹</span>💳 & Flexing too much freaking money <span class="emoji float">🤑💸</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section" id="vip">
+            <h3><span class="emoji pulse">⚠️</span> Restricted VIP Area</h3>
+            <p>This section contains highly classified personal information. Only authorized VIPs have the clearance.</p>
+            
+            <div class="card" style="max-width: 400px; margin: 20px auto; background-color: var(--container-bg);">
+                <h4 style="color: var(--text-main); margin-bottom: 15px;"><span class="emoji wiggle">🔑</span> Enter VIP Passkey</h4>
+                <input type="password" id="vipPassword" class="git-input" placeholder="Enter secret code...">
+                <button id="vipBtn" class="git-btn">Unlock Vault</button>
+                <p id="vipError">Access Denied: Invalid Passkey</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- 1. Main Entry Logic ---
+            const entryModal = document.getElementById('entryModal');
+            const mainApp = document.getElementById('mainApp');
+            const entryPassword = document.getElementById('entryPassword');
+            const entryBtn = document.getElementById('entryBtn');
+
+            function checkEntry() {
+                if (entryPassword.value === 'Harsh') {
+                    entryModal.style.opacity = '0';
+                    setTimeout(() => {
+                        entryModal.style.display = 'none';
+                        mainApp.style.display = 'block';
+                    }, 400);
+                } else {
+                    entryPassword.style.borderColor = '#f85149'; 
+                    entryPassword.value = '';
+                    entryPassword.placeholder = 'Incorrect password...';
+                    setTimeout(() => {
+                        entryPassword.style.borderColor = '#30363d';
+                        entryPassword.placeholder = 'Enter root password...';
+                    }, 1500);
+                }
+            }
+
+            entryBtn.addEventListener('click', checkEntry);
+            entryPassword.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') checkEntry();
+            });
+
+
+            // --- 2. Tab Switching Logic ---
+            const tabs = document.querySelectorAll('.tab');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    contentSections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === targetTab) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+
+            // --- 3. VIP Section Logic ---
+            const vipPassword = document.getElementById('vipPassword');
+            const vipBtn = document.getElementById('vipBtn');
+            const vipError = document.getElementById('vipError');
+
+            function checkVip() {
+                if (vipPassword.value === 'Harsh620') {
+                    window.location.href = 'https://www.google.com';
+                } else {
+                    vipError.style.display = 'block';
+                    vipPassword.style.borderColor = '#f85149';
+                    setTimeout(() => {
+                        vipError.style.display = 'none';
+                        vipPassword.style.borderColor = '#30363d';
+                    }, 2000);
+                }
+            }
+
+            vipBtn.addEventListener('click', checkVip);
+            vipPassword.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') checkVip();
+            });
+
+        });
+    </script>
+</body>
+</html>
